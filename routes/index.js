@@ -1,23 +1,40 @@
 var express = require("express");
 var router = express.Router();
-//DATABSE
-var pgp = require("pg-promise")(/* options */);
-var db = pgp(
-  "postgres://admin:Monique1998!!1998@localhost:62338/mymovielistdb"
+
+var db = require("../queries");
+
+//#region members
+
+router.get("/api/members/:id", db.getSingleMember);
+router.get("/api/members", db.getAllMembers);
+router.post("/api/members/register", db.createMember);
+router.post("/api/members/edit/:id", db.updateMember);
+router.post("/api/members/remove/:id", db.removeMember);
+
+//#endregion
+
+//#region movies
+
+router.get("/api/movies/:id", db.getSingleMovie);
+router.get("/api/movies", db.getAllMovies);
+router.post("/api/movies/register", db.createMovie);
+router.post("/api/movies/edit/:id", db.updateMovie);
+router.post("/api/movies/remove/:id", db.removeMovie);
+
+//#endregion
+
+//#region member_movies
+
+router.get("/api/members/:id/favorites", db.getAllMoviesFromMemberFavorites);
+router.post(
+  "/api/members/:id/favorites/add/:imdb",
+  db.addMovieToMemberFavorites
+);
+router.post(
+  "/api/members/:id/favorites/remove/:imdb",
+  db.removeMovieFromMemberFavorites
 );
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  db.one("SELECT $1 AS value", 123)
-    .then(function (data) {
-      console.log("DATA:", data.value);
-    })
-    .catch(function (error) {
-      console.log("ERROR:", error);
-    });
-
-  res.send("index");
-  //res.render("index", { title: "Express" });
-});
+//#endregion
 
 module.exports = router;
