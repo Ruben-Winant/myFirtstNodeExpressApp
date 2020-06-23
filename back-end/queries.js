@@ -10,6 +10,8 @@ var connectionString =
   "postgres://admin:Monique1998!!1998@127.0.0.1:5432/mymovielistdb";
 var db = pgp(connectionString);
 
+//TODO hide credentials
+
 // add query functions
 
 module.exports = {
